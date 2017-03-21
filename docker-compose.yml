@@ -1,0 +1,78 @@
+version: "2"
+
+services:
+    ### NGINX Container #########################################
+    web:
+        build:
+            context: ./nginx
+            args:
+                #- PHP_VERSION=php71
+                - PHP_VERSION=php56
+        volumes:
+            - /data/www:/data/wwwroot/default
+        ports:
+            - "80:80"
+        links:
+            - php56
+            - php71
+        #volumes_from:
+        #    - php-fpm
+
+    ### PHP-FPM Container #######################################
+    php56:
+        build:
+            context: ./php-fpm
+            args        :
+                - INSTALL_XDEBUG=true
+            #    - INSTALL_MEMCACHED=true
+                - INSTALL_PHPREDIS=true
+                - INSTALL_OPCACHE=false
+                - SERVER_START=true
+            dockerfile: Dockerfile-56
+        #ports:
+        #    - "9000:9000"
+        links:
+            - mysql
+        expose:
+            - "9000"
+        volumes:
+            - /data/www:/data/wwwroot/default
+        environment:
+            SERVER_START: 'true'
+        command: sh /usr/sbin/php_start
+        
+    #### php-fpm muti-versions ##################################    
+    php71:
+        build:
+            context: ./php-fpm
+            args:
+                - INSTALL_XDEBUG=true
+                #- INSTALL_MEMCACHED=true
+                - INSTALL_PHPREDIS=true
+                - INSTALL_OPCACHE=false
+                - SERVER_START=false
+            dockerfile: Dockerfile-71
+       # ports:
+       #     - "9000:9000"
+        links:
+            - mysql
+        expose:
+            - "9000"
+        volumes:
+            - /data/www:/data/wwwroot/default
+        environment:
+            SERVER_START: 'false'
+        command: sh /usr/sbin/php_start
+
+    mysql:
+        build:
+            context: ./mysql
+        ports:
+            - "3306:3306"
+        volumes:
+            - /data/mysql:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: macken
+            MYSQL_USER: homestead
+            MYSQL_PASSWORD: 123456
+            MYSQL_ROOT_PASSWORD: root
