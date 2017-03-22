@@ -8,13 +8,15 @@ services:
             args:
                 #- PHP_VERSION=php71
                 - PHP_VERSION=php56
-        volumes:
-            - /data/www:/data/wwwroot/default
         ports:
             - "80:80"
         links:
             - php56
             - php71
+        volumes:
+            - /data/www:/data/wwwroot/default
+            #- /data/nginx:/app/nginx
+
         #volumes_from:
         #    - php-fpm
 

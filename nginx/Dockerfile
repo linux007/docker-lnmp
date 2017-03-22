@@ -1,5 +1,7 @@
 FROM centos:6
 
+#VOLUME /app/nginx
+
 EXPOSE 80 443
 WORKDIR /usr/local/src
 #RUN yum -y update && \
