@@ -16,5 +16,6 @@ function enterpoint() {
 EOF
 echo "[ -f ~/.bashrc_docker ] && . ~/.bashrc_docker" >> ~/.bashrc; source ~/.bashrc
 
-[ ! -d /data/www ] && mkdir -p /data/www
-[ ! -d /data/mysql ] && mkdir -p /data/mysql
+[ ! -d /data/www ] && sudo mkdir -p /Users/data/www
+[ ! -d /data/mysql ] && sudo mkdir -p /Users/data/mysql
+sudo chmod -R 777 /Users/data/mysql

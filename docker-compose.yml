@@ -14,7 +14,7 @@ services:
             - php56
             - php71
         volumes:
-            - /data/www:/data/wwwroot/default
+            - /Users/data/www:/data/wwwroot/default
             #- /data/nginx:/app/nginx
 
         #volumes_from:
@@ -25,11 +25,10 @@ services:
         build:
             context: ./php-fpm
             args        :
-                - INSTALL_XDEBUG=true
+            #    - INSTALL_XDEBUG=true
             #    - INSTALL_MEMCACHED=true
-                - INSTALL_PHPREDIS=true
-                - INSTALL_OPCACHE=false
-                - SERVER_START=true
+            #    - INSTALL_PHPREDIS=true
+                - INSTALL_OPCACHE=true
             dockerfile: Dockerfile-56
         #ports:
         #    - "9000:9000"
@@ -38,7 +37,7 @@ services:
         expose:
             - "9000"
         volumes:
-            - /data/www:/data/wwwroot/default
+            - /Users/data/www:/data/wwwroot/default
         environment:
             SERVER_START: 'true'
         command: sh /usr/sbin/php_start
@@ -48,11 +47,10 @@ services:
         build:
             context: ./php-fpm
             args:
-                - INSTALL_XDEBUG=true
+             #   - INSTALL_XDEBUG=true
                 #- INSTALL_MEMCACHED=true
-                - INSTALL_PHPREDIS=true
-                - INSTALL_OPCACHE=false
-                - SERVER_START=false
+            #    - INSTALL_PHPREDIS=true
+                - INSTALL_OPCACHE=true
             dockerfile: Dockerfile-71
        # ports:
        #     - "9000:9000"
@@ -61,7 +59,7 @@ services:
         expose:
             - "9000"
         volumes:
-            - /data/www:/data/wwwroot/default
+            - /Users/data/www:/data/wwwroot/default
         environment:
             SERVER_START: 'false'
         command: sh /usr/sbin/php_start
@@ -72,7 +70,8 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - /data/mysql:/var/lib/mysql
+            - /Users/data/mysql:/var/lib/mysql
+        privileged: true
         environment:
             MYSQL_DATABASE: macken
             MYSQL_USER: homestead
