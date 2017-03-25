@@ -6,6 +6,8 @@
 - /data/mysql   mysql数据库目录
 - /data/nginx   nginx配置
 
+ps: mac 默认挂在点没有/data 目录，需替换为/Users/data
+
 ### 依赖
 docker  docker-compose 最新稳定版本
 #### 构建
