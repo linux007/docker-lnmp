@@ -1,7 +1,5 @@
 FROM centos:6
 
-#VOLUME /app/nginx
-
 EXPOSE 80 443
 WORKDIR /usr/local/src
 #RUN yum -y update && \
@@ -24,9 +22,9 @@ RUN useradd -M -s /sbin/nologin www
 RUN mkdir -p /app/nginx
 
 #install
-RUN wget http://nginx.org/download/nginx-1.10.1.tar.gz
-RUN tar zxvf nginx-1.10.1.tar.gz && \
-    cd nginx-1.10.1 && \
+RUN wget https://openresty.org/download/openresty-1.11.2.2.tar.gz
+RUN tar zxvf openresty-1.11.2.2.tar.gz && \
+    cd openresty-1.11.2.2 && \
     ./configure \
     --user=www \
     --group=www \
@@ -35,6 +33,7 @@ RUN tar zxvf nginx-1.10.1.tar.gz && \
     --with-pcre=../pcre-8.40 \
     --with-zlib=../zlib-1.2.11 \
     --with-http_stub_status_module \
+    --with-luajit \
     --with-http_v2_module \
     --with-http_ssl_module \
     --with-ipv6 \
@@ -47,7 +46,8 @@ ARG PHP_VERSION
 #COPY nginx_${PHP_VERSION}.conf /app/nginx/conf/nginx.conf
 COPY nginx.conf /app/nginx/conf/nginx.conf
 RUN sed -i "s/php56/${PHP_VERSION}/g" /app/nginx/conf/nginx.conf
-COPY run.sh  ~/nginx_run.sh
+COPY run.sh ~/nginx_run.sh
 
-CMD ["/bin/bash","~/nginx_run.sh"]
+#CMD ["/usr/local/nginx/sbin/nginx","-g","daemon off;"]
+CMD ["/bin/bash", "~/nginx_run.sh"]
 

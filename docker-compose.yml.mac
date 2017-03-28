@@ -6,15 +6,15 @@ services:
         build:
             context: ./nginx
             args:
-                #- PHP_VERSION=php71
-                - PHP_VERSION=php56
+                - PHP_VERSION=php71
+                #- PHP_VERSION=php56
         ports:
             - "80:80"
         links:
             - php56
             - php71
         volumes:
-            - /Users/data/www:/data/wwwroot/default
+            - /data/www:/data/wwwroot/default
             #- /data/nginx:/app/nginx
         environment:
             SERVER_START: 'false'
@@ -23,17 +23,17 @@ services:
         build:
             context: ./OpenResty
             args:
-                #- PHP_VERSION=php71
-                - PHP_VERSION=php56
+                - PHP_VERSION=php71
+                #- PHP_VERSION=php56
         ports:
             - "80:80"
         links:
             - php56
             - php71
         volumes:
-            - /Users/data/www:/data/wwwroot/default
+            - /data/www:/data/wwwroot/default
         environment:
-            SERVER_START: 'false'
+            SERVER_START: 'true'
 
     ### PHP-FPM Container #######################################
     php56:
@@ -53,9 +53,9 @@ services:
         expose:
             - "9000"
         volumes:
-            - /Users/data/www:/data/wwwroot/default
+            - /data/www:/data/wwwroot/default
         environment:
-            SERVER_START: 'true'
+            SERVER_START: 'false'
         command: sh /usr/sbin/php_start
         
     #### php-fpm muti-versions ##################################    
@@ -76,7 +76,7 @@ services:
         expose:
             - "9000"
         volumes:
-            - /Users/data/www:/data/wwwroot/default
+            - /data/www:/data/wwwroot/default
         environment:
             SERVER_START: 'true'
         command: sh /usr/sbin/php_start
@@ -87,7 +87,7 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - /Users/data/mysql:/var/lib/mysql
+            - /data/mysql:/var/lib/mysql
         privileged: true
         environment:
             MYSQL_DATABASE: macken
